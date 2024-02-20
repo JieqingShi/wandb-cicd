@@ -6,6 +6,7 @@ jobs:
   my-first-job:
     runs-on: ubuntu-latest
     steps:
+      - name: hello
       - run: echo "🔈 The job was automatically triggered by a ${{ github.event_name }} event, running on a ${{ runner.os }} server."
       - run: echo "🎅 The name of the branch is ${{ github.ref }} and the repository is ${{ github.repository }}"
       - name: Check out repository code
