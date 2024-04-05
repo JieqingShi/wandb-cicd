@@ -14,6 +14,10 @@ jobs:
 
     - name: Get repo contents
       uses: actions/checkout@v3
+      # issue_comment events are triggered by the workflow file on the DEFAULT (=main) branch
+      # which is insanely stupid. Therefore adding this to checkout the PR branch, see also https://github.com/actions/checkout/issues/331
+      with:
+          ref: refs/pull/${{ github.event.issue.number }}/head
 
     - name: install dependencies
       run: pip install ghapi wandb
