@@ -12,8 +12,8 @@ def get_baseline_run(entity='hamelsmu', project='my-report-project', tag='baseli
     return runs[0]
 
 
-def compare_runs(entity='hamelsmu',
-                 project='cicd_demo',
+def compare_runs(entity=None,
+                 project='mlops-course-001',
                  tag='baseline',
                  run_id=None):
     "Compare the current run to the baseline run."
