@@ -11,17 +11,24 @@ jobs:
     if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, '/wandb')
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Pull Request
-      run: hub pr checkout ${{ github.event.issue.number }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Get repo contents
+    - name: Get PR branch
+      uses: xt0rted/pull-request-comment-branch@v1
+      id: comment-branch
+    - name: Checkout PR branch
       uses: actions/checkout@v3
+      with:
+        ref: ${{ steps.comment-branch.outputs.head_ref }}
+    # NONE of the solutions below work
+    # - name: Get repo contents
+    #   uses: actions/checkout@v3
       # issue_comment events are triggered by the workflow file on the DEFAULT (=main) branch
       # which is insanely stupid. Therefore adding this to checkout the PR branch, see also https://github.com/actions/checkout/issues/331
       # with:
       #     ref: refs/pull/${{ github.event.issue.number }}/head
+    # - name: Checkout Pull Request
+    #   run: hub pr checkout ${{ github.event.issue.number }}
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: install dependencies
       run: pip install ghapi wandb
