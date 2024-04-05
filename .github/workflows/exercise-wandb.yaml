@@ -10,7 +10,11 @@ jobs:
   ghapi-exercise:
     if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, '/wandb')
     runs-on: ubuntu-latest
-    steps:        
+    steps:
+    - name: Checkout Pull Request
+      run: hub pr checkout ${{ github.event.issue.number }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Get repo contents
       uses: actions/checkout@v3
@@ -18,10 +22,6 @@ jobs:
       # which is insanely stupid. Therefore adding this to checkout the PR branch, see also https://github.com/actions/checkout/issues/331
       # with:
       #     ref: refs/pull/${{ github.event.issue.number }}/head
-    - name: Checkout Pull Request
-      run: hub pr checkout ${{ github.event.issue.number }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: install dependencies
       run: pip install ghapi wandb
